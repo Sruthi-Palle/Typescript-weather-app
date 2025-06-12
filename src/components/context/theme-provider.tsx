@@ -62,7 +62,7 @@ export function ThemeProvider({
     </ThemeProviderContext.Provider>
   );
 }
-
+//Custom hook to use the ThemeProvider context
 export const useTheme = () => {
   const context = useContext(ThemeProviderContext);
 
