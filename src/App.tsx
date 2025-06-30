@@ -1,24 +1,24 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-import "./App.css";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { Toaster } from "./components/ui/sonner";
+import { WeatherDashboard } from "./components/pages/WeatherDashboard";
 import Layout from "./components/layout";
 import { ThemeProvider } from "./components/context/theme-provider";
-import CityPage from "./components/pages/CityPage";
-import { WeatherDashboard } from "./components/pages/WeatherDashboard";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { CityPage } from "./components/pages/CityPage";
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5 * 60 * 1000, // 5 minutes
+      gcTime: 10 * 60 * 1000, // 10 minutes
+      retry: false,
+      refetchOnWindowFocus: false,
+    },
+  },
+});
 
 function App() {
-  const queryClient = new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: 5 * 60 * 1000, // 5 minutes
-        gcTime: 10 * 60 * 1000, // 10 minutes
-        retry: false,
-        refetchOnWindowFocus: false,
-      },
-    },
-  });
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -29,6 +29,7 @@ function App() {
               <Route path="/city/:cityName" element={<CityPage />} />
             </Routes>
           </Layout>
+          <Toaster richColors />
         </ThemeProvider>
       </BrowserRouter>
       <ReactQueryDevtools initialIsOpen={false} />
